@@ -69,7 +69,7 @@ class TextOutput extends Window {
   static final textOutputWindowClass = WindowClass(
     className: 'textOutput',
     windowProc: Pointer.fromFunction<WindowProc>(textOutputWindowProc, 0),
-    bgColor: RGB(42, 40, 38),
+    bgColor: RGB(128,128,128),
     isFrame: false,
   );
 
