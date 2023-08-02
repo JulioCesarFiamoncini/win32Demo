@@ -12,7 +12,7 @@ void main() {
 }
 
 class MainWindow extends Window {
-  static final mainWindowClass = WindowClass(
+  static final mainWindowClass = WindowClass.custom(
     className: 'mainWindow',
     windowProc: Pointer.fromFunction<WindowProc>(mainWindowProc, 0),
     bgColor: RGB(42, 40, 38),
@@ -66,16 +66,10 @@ class MainWindow extends Window {
 }
 
 class TextOutput extends Window {
-  static final textOutputWindowClass = WindowClass(
-    className: 'textOutput',
-    windowProc: Pointer.fromFunction<WindowProc>(textOutputWindowProc, 0),
-    bgColor: RGB(128,128,128),
-    isFrame: false,
+  static final textOutputWindowClass = WindowClass.predefined(
+    className: 'edit',
+    bgColor: RGB(128, 128, 128),
   );
-
-  static int textOutputWindowProc(int hwnd, int uMsg, int wParam, int lParam) =>
-      WindowClass.windowProcDefault(
-          hwnd, uMsg, wParam, lParam, textOutputWindowClass);
 
   TextOutput({super.parentHwnd})
       : super(
@@ -107,7 +101,7 @@ class TextOutput extends Window {
 
   @override
   void repaint(int hwnd, int hdc) {
-    SetTextColor(hdc, RGB(255, 0, 0));	// red
+    SetTextColor(hdc, RGB(255, 0, 0)); // red
 
     SetWindowText(hwnd,
         TEXT("Hello\r\nWorld!!!\r\n-------------------\r\n Bla bla bla\r\n"));

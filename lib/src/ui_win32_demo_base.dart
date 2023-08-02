@@ -22,13 +22,23 @@ class WindowClass {
 
   final int? titleColor;
 
-  WindowClass(
+  final bool custom;
+
+  WindowClass.custom(
       {required this.className,
       required this.windowProc,
       this.isFrame = true,
       this.bgColor,
       this.useDarkMode = false,
-      this.titleColor});
+      this.titleColor})
+      : custom = true;
+
+  WindowClass.predefined({required this.className, this.bgColor})
+      : custom = false,
+        windowProc = nullptr,
+        isFrame = false,
+        useDarkMode = false,
+        titleColor = null;
 
   Pointer<Utf16>? _classNameNative;
 
@@ -83,9 +93,9 @@ class WindowClass {
       case WM_CTLCOLOREDIT:
         {
           var hdc = wParam;
-          SetTextColor(hdc, RGB(255, 0, 0));	// red
-          SetBkMode(hdc,OPAQUE);
-          SetBkColor(hdc, RGB(255, 255, 0));	// yellow
+          SetTextColor(hdc, RGB(255, 0, 0)); // red
+          SetBkMode(hdc, OPAQUE);
+          SetBkColor(hdc, RGB(255, 255, 0)); // yellow
           result = CreateSolidBrush(RGB(0, 255, 0));
         }
       case WM_DESTROY:
@@ -119,6 +129,10 @@ class WindowClass {
   static final Map<String, int> _registeredWindowClasses = {};
 
   static bool _registerWindowClass(WindowClass windowClass) {
+    if (!windowClass.custom) {
+      return true;
+    }
+
     if (_registeredWindowClasses.containsKey(windowClass.className)) {
       return false;
     }
