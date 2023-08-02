@@ -1,10 +1,13 @@
 import 'package:ui_win32_demo/ui_win32_demo.dart';
 
 void main() {
-  WindowClass.editColors = WindowClassColors(
+  var editorClass = WindowClassColors(
     textColor: RGB(0, 0, 0),
     bgColor: RGB(42, 40, 38),
   );
+
+  WindowClass.editColors = editorClass;
+  WindowClass.staticColors = editorClass;
 
   var mainWindow = MainWindow(
     width: 640,
