@@ -91,7 +91,12 @@ class TextOutput extends Window {
           y: 360,
           width: 626,
           height: 90,
-        );
+        ) {
+    WindowClass.editColors = WindowClassColors(
+      textColor: RGB(0, 0, 0),
+      bgColor: RGB(42, 40, 38),
+    );
+  }
 
   @override
   void build(int hwnd, int hdc) {

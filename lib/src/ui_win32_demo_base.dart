@@ -10,6 +10,19 @@ final hInstance = GetModuleHandle(nullptr);
 typedef WindowProcFunction = int Function(
     int hwnd, int uMsg, int wParam, int lParam);
 
+class WindowClassColors {
+  final int? textColor;
+
+  final int? bgColor;
+
+  WindowClassColors({this.textColor, this.bgColor});
+
+  @override
+  String toString() {
+    return 'WindowClassColors{textColor: $textColor, bgColor: $bgColor}';
+  }
+}
+
 class WindowClass {
   final String className;
   final Pointer<NativeFunction<WindowProc>> windowProc;
@@ -44,6 +57,12 @@ class WindowClass {
 
   Pointer<Utf16> get classNameNative =>
       _classNameNative ??= className.toNativeUtf16();
+
+  static WindowClassColors? staticColors;
+
+  static WindowClassColors? editColors;
+
+  static WindowClassColors? scrollBarColors;
 
   static int windowProcDefault(
       int hwnd, int uMsg, int wParam, int lParam, WindowClass windowClass) {
@@ -91,14 +110,16 @@ class WindowClass {
           free(ps);
         }
       case WM_CTLCOLORSTATIC:
+        {
+          result = _setColors(wParam, staticColors);
+        }
       case WM_CTLCOLOREDIT:
+        {
+          result = _setColors(wParam, editColors);
+        }
       case WM_CTLCOLORSCROLLBAR:
         {
-          var hdc = wParam;
-          SetTextColor(hdc, RGB(255, 0, 0)); // red
-          SetBkMode(hdc, OPAQUE);
-          SetBkColor(hdc, RGB(255, 255, 0)); // yellow
-          result = CreateSolidBrush(RGB(0, 255, 0));
+          result = _setColors(wParam, scrollBarColors);
         }
       case WM_DESTROY:
         {
@@ -112,6 +133,17 @@ class WindowClass {
     }
 
     return result;
+  }
+
+  static int _setColors(int hdc, WindowClassColors? colors) {
+    if (colors == null) {
+      return 0;
+    }
+
+    SetTextColor(hdc, RGB(255, 0, 0)); // red
+    SetBkMode(hdc, OPAQUE);
+    SetBkColor(hdc, RGB(255, 255, 0)); // yellow
+    return CreateSolidBrush(RGB(0, 255, 0));
   }
 
   final Set<Window> _windows = {};
