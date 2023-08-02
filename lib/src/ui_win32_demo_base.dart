@@ -80,7 +80,13 @@ class WindowClass {
           EndPaint(hwnd, ps);
           free(ps);
         }
-
+      case WM_CTLCOLOREDIT:
+        {
+          var hdc = wParam;
+          SetTextColor(hdc, RGB(255, 0, 0));	// red
+          SetBkColor(hdc, RGB(255, 255, 0));	// yellow
+          result = CreateSolidBrush(RGB(0, 255, 0));
+        }
       case WM_DESTROY:
         {
           PostQuitMessage(0);
