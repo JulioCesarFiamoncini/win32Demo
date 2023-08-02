@@ -14,6 +14,8 @@ class WindowClass {
   final String className;
   final Pointer<NativeFunction<WindowProc>> windowProc;
 
+  final bool isFrame;
+
   final int? bgColor;
 
   final bool useDarkMode;
@@ -23,6 +25,7 @@ class WindowClass {
   WindowClass(
       {required this.className,
       required this.windowProc,
+      this.isFrame = true,
       this.bgColor,
       this.useDarkMode = false,
       this.titleColor});
@@ -118,12 +121,15 @@ class WindowClass {
     var wcRef = wc.ref;
 
     wcRef
-      ..style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC
-      ..lpfnWndProc = windowClass.windowProc
       ..hInstance = hInstance
-      ..hIcon = LoadIcon(NULL, IDI_APPLICATION)
-      ..hCursor = LoadCursor(NULL, IDC_ARROW)
-      ..lpszClassName = windowClass.classNameNative;
+      ..lpszClassName = windowClass.classNameNative
+      ..lpfnWndProc = windowClass.windowProc
+      ..style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC
+      ..hCursor = LoadCursor(NULL, IDC_ARROW);
+
+    if (windowClass.isFrame) {
+      wcRef.hIcon = LoadIcon(NULL, IDI_APPLICATION);
+    }
 
     final bgColor = windowClass.bgColor;
     if (bgColor != null) {

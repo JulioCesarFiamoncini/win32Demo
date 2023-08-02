@@ -67,9 +67,11 @@ class MainWindow extends Window {
 
 class TextOutput extends Window {
   static final textOutputWindowClass = WindowClass(
-      className: 'textOutput',
-      windowProc: Pointer.fromFunction<WindowProc>(textOutputWindowProc, 0),
-      bgColor: RGB(42, 40, 38));
+    className: 'textOutput',
+    windowProc: Pointer.fromFunction<WindowProc>(textOutputWindowProc, 0),
+    bgColor: RGB(42, 40, 38),
+    isFrame: false,
+  );
 
   static int textOutputWindowProc(int hwnd, int uMsg, int wParam, int lParam) =>
       WindowClass.windowProcDefault(
