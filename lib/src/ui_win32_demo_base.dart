@@ -90,7 +90,9 @@ class WindowClass {
           EndPaint(hwnd, ps);
           free(ps);
         }
+      case WM_CTLCOLORSTATIC:
       case WM_CTLCOLOREDIT:
+      case WM_CTLCOLORSCROLLBAR:
         {
           var hdc = wParam;
           SetTextColor(hdc, RGB(255, 0, 0)); // red
