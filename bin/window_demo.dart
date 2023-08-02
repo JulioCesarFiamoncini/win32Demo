@@ -1,6 +1,11 @@
 import 'package:ui_win32_demo/ui_win32_demo.dart';
 
 void main() {
+  WindowClass.editColors = WindowClassColors(
+    textColor: RGB(0, 0, 0),
+    bgColor: RGB(42, 40, 38),
+  );
+
   var mainWindow = MainWindow(
     width: 640,
     height: 480,
@@ -91,12 +96,7 @@ class TextOutput extends Window {
           y: 360,
           width: 626,
           height: 90,
-        ) {
-    WindowClass.editColors = WindowClassColors(
-      textColor: RGB(0, 0, 0),
-      bgColor: RGB(42, 40, 38),
-    );
-  }
+        );
 
   @override
   void build(int hwnd, int hdc) {
