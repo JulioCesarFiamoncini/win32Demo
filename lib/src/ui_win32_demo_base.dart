@@ -73,7 +73,7 @@ class WindowClass {
           }
 
           for (var w in windowClass._windows) {
-            w.callBuild(hwnd, hdc);
+            w.callBuild(hwnd: hwnd, hdc: hdc);
           }
 
           ReleaseDC(hwnd, hdc);
@@ -84,7 +84,7 @@ class WindowClass {
           final hdc = BeginPaint(hwnd, ps);
 
           for (var w in windowClass._windows) {
-            w.callRepaint(hwnd, hdc);
+            w.callRepaint(hwnd: hwnd, hdc: hdc);
           }
 
           EndPaint(hwnd, ps);
@@ -283,9 +283,23 @@ class Window {
 
   int get dimensionHeight => dimension.ref.bottom - dimension.ref.top;
 
-  void callBuild(int hwnd, int hdc) {
-    fetchDimension(hwnd: hwnd);
+  bool callBuild({int? hwnd, int? hdc}) {
+    hwnd ??= this.hwnd;
+    if (hwnd == null) return false;
 
+    if (hdc == null) {
+      final hdc = GetDC(hwnd);
+      _callBuildImpl(hwnd, hdc);
+      ReleaseDC(hwnd, hdc);
+    } else {
+      _callBuildImpl(hwnd, hdc);
+    }
+
+    return true;
+  }
+
+  void _callBuildImpl(int hwnd, int hdc) {
+    fetchDimension(hwnd: hwnd);
     build(hwnd, hdc);
   }
 
@@ -295,9 +309,25 @@ class Window {
     SetWindowExtEx(hdc, 1, 1, nullptr);
   }
 
-  void callRepaint(int hwnd, int hdc) {
-    fetchDimension(hwnd: hwnd);
+  bool callRepaint({int? hwnd, int? hdc}) {
+    hwnd ??= this.hwnd;
+    if (hwnd == null) return false;
 
+    if (hdc == null) {
+      final ps = calloc<PAINTSTRUCT>();
+      final hdc = BeginPaint(hwnd, ps);
+
+      _callRepaintImpl(hwnd, hdc);
+      EndPaint(hwnd, ps);
+    } else {
+      _callRepaintImpl(hwnd, hdc);
+    }
+
+    return true;
+  }
+
+  void _callRepaintImpl(int hwnd, int hdc) {
+    fetchDimension(hwnd: hwnd);
     repaint(hwnd, hdc);
   }
 

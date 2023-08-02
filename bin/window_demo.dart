@@ -62,6 +62,8 @@ class MainWindow extends Window {
     final y = vSpace;
 
     drawImage(hwnd, hdc, hBitmap, x, y, w, h);
+
+    textOutput.callRepaint();
   }
 }
 
