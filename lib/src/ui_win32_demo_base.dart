@@ -140,10 +140,18 @@ class WindowClass {
       return 0;
     }
 
-    SetTextColor(hdc, RGB(255, 0, 0)); // red
-    SetBkMode(hdc, OPAQUE);
-    SetBkColor(hdc, RGB(255, 255, 0)); // yellow
-    return CreateSolidBrush(RGB(0, 255, 0));
+    var textColor = colors.textColor;
+    if (textColor != null) {
+      SetTextColor(hdc, textColor);
+    }
+
+    var bgColor = colors.bgColor;
+    if (bgColor != null) {
+      SetBkMode(hdc, OPAQUE);
+      SetBkColor(hdc, bgColor);
+    }
+
+    return CreateSolidBrush(bgColor ?? textColor ?? RGB(255, 255, 255));
   }
 
   final Set<Window> _windows = {};
