@@ -107,6 +107,8 @@ class TextOutput extends Window {
 
   @override
   void repaint(int hwnd, int hdc) {
+    SetTextColor(hdc, RGB(255, 0, 0));	// red
+
     SetWindowText(hwnd,
         TEXT("Hello\r\nWorld!!!\r\n-------------------\r\n Bla bla bla\r\n"));
   }

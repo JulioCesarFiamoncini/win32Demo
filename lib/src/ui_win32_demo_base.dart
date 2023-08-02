@@ -84,6 +84,7 @@ class WindowClass {
         {
           var hdc = wParam;
           SetTextColor(hdc, RGB(255, 0, 0));	// red
+          SetBkMode(hdc,OPAQUE);
           SetBkColor(hdc, RGB(255, 255, 0));	// yellow
           result = CreateSolidBrush(RGB(0, 255, 0));
         }
