@@ -14,7 +14,7 @@ void main() {
 class MainWindow extends Window {
   static final mainWindowClass = WindowClass(
       className: 'mainWindow',
-      windowProc: mainWindowProc,
+      windowProc: Pointer.fromFunction<WindowProc>(mainWindowProc, 0),
       bgColor: RGB(42, 40, 38));
 
   static int mainWindowProc(int hwnd, int uMsg, int wParam, int lParam) =>
@@ -40,7 +40,7 @@ class MainWindow extends Window {
 class TextOutput extends Window {
   static final textOutputWindowClass = WindowClass(
       className: 'textOutput',
-      windowProc: textOutputWindowProc,
+      windowProc: Pointer.fromFunction<WindowProc>(textOutputWindowProc, 0),
       bgColor: RGB(42, 40, 38));
 
   static int textOutputWindowProc(int hwnd, int uMsg, int wParam, int lParam) =>

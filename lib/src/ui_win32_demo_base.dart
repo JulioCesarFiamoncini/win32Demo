@@ -12,7 +12,7 @@ typedef WindowProcFunction = int Function(
 
 class WindowClass {
   final String className;
-  final WindowProcFunction windowProc;
+  final Pointer<NativeFunction<WindowProc>> windowProc;
 
   final int? bgColor;
 
@@ -117,11 +117,9 @@ class WindowClass {
 
     var wcRef = wc.ref;
 
-    var wndProc = Pointer.fromFunction<WindowProc>(windowClass.windowProc, 0);
-
     wcRef
       ..style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC
-      ..lpfnWndProc = wndProc
+      ..lpfnWndProc = windowClass.windowProc
       ..hInstance = hInstance
       ..hIcon = LoadIcon(NULL, IDI_APPLICATION)
       ..hCursor = LoadCursor(NULL, IDC_ARROW)
