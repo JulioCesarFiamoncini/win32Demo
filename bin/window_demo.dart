@@ -32,7 +32,7 @@ class MainWindow extends Window {
           windowClass: mainWindowClass,
           windowStyles: WS_MINIMIZEBOX | WS_SYSMENU,
         ) {
-    textOutput = TextOutput();
+    textOutput = TextOutput(parentHwnd: hwnd);
   }
 
   @override
@@ -75,9 +75,8 @@ class TextOutput extends Window {
       WindowClass.windowProcDefault(
           hwnd, uMsg, wParam, lParam, textOutputWindowClass);
 
-  TextOutput()
+  TextOutput({super.parentHwnd})
       : super(
-          windowName: 'Text Output',
           windowClass: textOutputWindowClass,
           windowStyles: WS_CHILD |
               ES_READONLY |

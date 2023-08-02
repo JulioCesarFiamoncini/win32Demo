@@ -153,7 +153,7 @@ class Window {
   }
 
   final WindowClass windowClass;
-  final String windowName;
+  final String? windowName;
 
   final int windowStyles;
 
@@ -169,7 +169,7 @@ class Window {
 
   Window(
       {required this.windowClass,
-      required this.windowName,
+      this.windowName,
       this.windowStyles = 0,
       this.x,
       this.y,
@@ -192,7 +192,7 @@ class Window {
   Pointer<Utf16>? _windowNameNative;
 
   Pointer<Utf16> get windowNameNative =>
-      _windowNameNative ??= windowName.toNativeUtf16();
+      _windowNameNative ??= windowName?.toNativeUtf16() ?? nullptr;
 
   int create() {
     final hwnd = CreateWindowEx(
