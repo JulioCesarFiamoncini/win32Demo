@@ -225,6 +225,9 @@ class Window {
 
     if (hwnd != 0) {
       UpdateWindow(hwnd);
+    } else {
+      var errorCode = GetLastError();
+      print('** GetLastError: $errorCode');
     }
 
     return hwnd;
