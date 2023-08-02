@@ -13,9 +13,12 @@ void main() {
 
 class MainWindow extends Window {
   static final mainWindowClass = WindowClass(
-      className: 'mainWindow',
-      windowProc: Pointer.fromFunction<WindowProc>(mainWindowProc, 0),
-      bgColor: RGB(42, 40, 38));
+    className: 'mainWindow',
+    windowProc: Pointer.fromFunction<WindowProc>(mainWindowProc, 0),
+    bgColor: RGB(42, 40, 38),
+    useDarkMode: true,
+    titleColor: RGB(42, 40, 38),
+  );
 
   static int mainWindowProc(int hwnd, int uMsg, int wParam, int lParam) =>
       WindowClass.windowProcDefault(
