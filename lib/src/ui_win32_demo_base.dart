@@ -71,6 +71,7 @@ class WindowClass {
     switch (uMsg) {
       case WM_CREATE:
         {
+          print('winProc[WM_CREATE]');
           final hdc = GetDC(hwnd);
 
           if (windowClass.useDarkMode) {
@@ -99,6 +100,8 @@ class WindowClass {
         }
       case WM_PAINT:
         {
+          print('winProc[WM_PAINT]');
+
           final ps = calloc<PAINTSTRUCT>();
           final hdc = BeginPaint(hwnd, ps);
 
@@ -111,23 +114,28 @@ class WindowClass {
         }
       case WM_CTLCOLORSTATIC:
         {
+          print('winProc[WM_CTLCOLORSTATIC]');
           result = _setColors(wParam, staticColors);
         }
       case WM_CTLCOLOREDIT:
         {
+          print('winProc[WM_CTLCOLOREDIT]');
           result = _setColors(wParam, editColors);
         }
       case WM_CTLCOLORSCROLLBAR:
         {
+          print('winProc[WM_CTLCOLORSCROLLBAR]');
           result = _setColors(wParam, scrollBarColors);
         }
       case WM_DESTROY:
         {
+          print('winProc[WM_DESTROY]');
           PostQuitMessage(0);
         }
 
       default:
         {
+          print('winProc[default]> uMsg: $uMsg');
           result = DefWindowProc(hwnd, uMsg, wParam, lParam);
         }
     }
