@@ -4,6 +4,7 @@ import 'dart:math' as math;
 
 import 'package:ffi/ffi.dart';
 import 'package:win32/win32.dart';
+import 'win32_constants.dart';
 
 final hInstance = GetModuleHandle(nullptr);
 
@@ -135,7 +136,8 @@ class WindowClass {
 
       default:
         {
-          print('winProc[default]> uMsg: $uMsg');
+          var name = Win32Constants.wmByID[uMsg];
+          print('winProc[default]> uMsg: $uMsg ; name: $name');
           result = DefWindowProc(hwnd, uMsg, wParam, lParam);
         }
     }
