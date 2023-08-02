@@ -244,6 +244,10 @@ class Window {
     }
   }
 
+  int get dimensionWidth => dimension.ref.right - dimension.ref.left;
+
+  int get dimensionHeight => dimension.ref.bottom - dimension.ref.top;
+
   void callBuild(int hwnd, int hdc) {
     fetchDimension(hwnd: hwnd);
 
@@ -303,6 +307,13 @@ class Window {
     final s = text.toNativeUtf16();
     TextOut(hdc, x, y, s, text.length);
     free(s);
+  }
+
+  final Map<String, int> _imagesCached = {};
+
+  int loadImageCached(int hwnd, String imgPath, int imgWidth, int imgHeight) {
+    return _imagesCached[imgPath] ??=
+        loadImage(hwnd, imgPath, imgWidth, imgHeight);
   }
 
   int loadImage(int hwnd, String imgPath, int imgWidth, int imgHeight) {

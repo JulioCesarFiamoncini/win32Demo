@@ -38,6 +38,27 @@ class MainWindow extends Window {
     SetTextColor(hdc, RGB(255, 255, 255));
     SetBkColor(hdc, RGB(42, 40, 38));
   }
+
+  @override
+  void repaint(int hwnd, int hdc) {
+    super.repaint(hwnd, hdc);
+
+    final imgPath = r'C:\menuici\menuici-logo-24.bmp';
+    var w = 512;
+    var h = 512;
+
+    var hBitmap = loadImageCached(hwnd, imgPath, w, h);
+
+    final hSpace = (dimensionWidth - w);
+    final vSpace = (dimensionHeight - h);
+    final xCenter = hSpace ~/ 2;
+    //final yCenter = vSpace ~/ 2;
+
+    final x = xCenter;
+    final y = vSpace;
+
+    drawImage(hwnd, hdc, hBitmap, x, y, w, h);
+  }
 }
 
 class TextOutput extends Window {
