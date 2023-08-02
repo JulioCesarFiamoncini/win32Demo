@@ -136,6 +136,11 @@ class WindowClass {
 
     return true;
   }
+
+  @override
+  String toString() {
+    return 'WindowClass{className: $className, bgColor: $bgColor, useDarkMode: $useDarkMode, titleColor: $titleColor, windows: ${_windows.length}';
+  }
 }
 
 class Window {
@@ -332,5 +337,10 @@ class Window {
     BitBlt(hdc, x, y, width, height, hMemDC, 0, 0, SRCCOPY);
 
     DeleteObject(hMemDC);
+  }
+
+  @override
+  String toString() {
+    return 'Window{windowName: $windowName, windowStyles: $windowStyles, x: $x, y: $y, width: $width, height: $height, bgColor: $bgColor, parentHwnd: $parentHwnd}@$windowClass';
   }
 }
