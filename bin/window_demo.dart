@@ -12,8 +12,14 @@ void main() {
 }
 
 class MainWindow extends Window {
-  static final mainWindowClass =
-      WindowClass(className: 'mainWindow', bgColor: RGB(42, 40, 38));
+  static final mainWindowClass = WindowClass(
+      className: 'mainWindow',
+      windowProc: mainWindowProc,
+      bgColor: RGB(42, 40, 38));
+
+  static int mainWindowProc(int hwnd, int uMsg, int wParam, int lParam) =>
+      WindowClass.windowProcDefault(
+          hwnd, uMsg, wParam, lParam, mainWindowClass);
 
   MainWindow({super.width, super.height})
       : super(
@@ -32,8 +38,14 @@ class MainWindow extends Window {
 }
 
 class TextOutput extends Window {
-  static final textOutputWindowClass =
-      WindowClass(className: 'textOutput', bgColor: RGB(42, 40, 38));
+  static final textOutputWindowClass = WindowClass(
+      className: 'textOutput',
+      windowProc: textOutputWindowProc,
+      bgColor: RGB(42, 40, 38));
+
+  static int textOutputWindowProc(int hwnd, int uMsg, int wParam, int lParam) =>
+      WindowClass.windowProcDefault(
+          hwnd, uMsg, wParam, lParam, textOutputWindowClass);
 
   TextOutput()
       : super(

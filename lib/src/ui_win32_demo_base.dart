@@ -12,6 +12,7 @@ typedef WindowProcFunction = int Function(
 
 class WindowClass {
   final String className;
+  final WindowProcFunction windowProc;
 
   final int? bgColor;
 
@@ -21,6 +22,7 @@ class WindowClass {
 
   WindowClass(
       {required this.className,
+      required this.windowProc,
       this.bgColor,
       this.useDarkMode = false,
       this.titleColor});
@@ -30,7 +32,8 @@ class WindowClass {
   Pointer<Utf16> get classNameNative =>
       _classNameNative ??= className.toNativeUtf16();
 
-  int windowProc(int hwnd, int uMsg, int wParam, int lParam) {
+  static int windowProcDefault(
+      int hwnd, int uMsg, int wParam, int lParam, WindowClass windowClass) {
     var result = 0;
 
     switch (uMsg) {
@@ -38,7 +41,7 @@ class WindowClass {
         {
           final hdc = GetDC(hwnd);
 
-          if (useDarkMode) {
+          if (windowClass.useDarkMode) {
             DwmSetWindowAttribute(
                 hwnd,
                 DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE,
@@ -46,7 +49,7 @@ class WindowClass {
                 sizeOf<BOOL>());
           }
 
-          final titleColor = this.titleColor;
+          final titleColor = windowClass.titleColor;
           if (titleColor != null) {
             DwmSetWindowAttribute(
               hwnd,
@@ -56,7 +59,7 @@ class WindowClass {
             );
           }
 
-          for (var w in _windows) {
+          for (var w in windowClass._windows) {
             w.callBuild(hwnd, hdc);
           }
 
@@ -67,7 +70,7 @@ class WindowClass {
           final ps = calloc<PAINTSTRUCT>();
           final hdc = BeginPaint(hwnd, ps);
 
-          for (var w in _windows) {
+          for (var w in windowClass._windows) {
             w.callRepaint(hwnd, hdc);
           }
 
@@ -114,10 +117,11 @@ class WindowClass {
 
     var wcRef = wc.ref;
 
+    var wndProc = Pointer.fromFunction<WindowProc>(windowClass.windowProc, 0);
+
     wcRef
       ..style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC
-      ..lpfnWndProc =
-          Pointer.fromFunction<WindowProc>(windowClass.windowProc, 0)
+      ..lpfnWndProc = wndProc
       ..hInstance = hInstance
       ..hIcon = LoadIcon(NULL, IDI_APPLICATION)
       ..hCursor = LoadCursor(NULL, IDC_ARROW)
