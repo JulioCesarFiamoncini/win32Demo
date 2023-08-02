@@ -24,12 +24,16 @@ class MainWindow extends Window {
       WindowClass.windowProcDefault(
           hwnd, uMsg, wParam, lParam, mainWindowClass);
 
+  late final TextOutput textOutput;
+
   MainWindow({super.width, super.height})
       : super(
           windowName: 'Main Window',
           windowClass: mainWindowClass,
           windowStyles: WS_MINIMIZEBOX | WS_SYSMENU,
-        );
+        ) {
+    textOutput = TextOutput();
+  }
 
   @override
   void build(int hwnd, int hdc) {
