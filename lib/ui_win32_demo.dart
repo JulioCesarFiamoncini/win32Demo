@@ -1,8 +1,5 @@
-/// Support for doing something awesome.
-///
-/// More dartdocs go here.
-library;
+/// Demo library of package `win32`.
+library ui_win32_demo;
 
+export 'package:win32/win32.dart';
 export 'src/ui_win32_demo_base.dart';
-
-// TODO: Export any libraries intended for clients of this package.

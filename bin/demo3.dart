@@ -143,7 +143,7 @@ class Canvas {
     // Set default colors
     SetTextColor(hdc, RGB(255, 255, 255));
     SetBkColor(hdc, RGB(42, 40, 38));
-    
+
     //SetBkMode(hdc, TRANSPARENT);
 
     //buildOutputBox();
@@ -247,14 +247,14 @@ class TextOutput {
     final szAppName = 'Menu Ici - Output'.toNativeUtf16();
 
     wc = calloc<WNDCLASS>()
-    ..ref.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC
-    ..ref.lpfnWndProc = Pointer.fromFunction<WindowProc>(editWindowProc, 0)
-    ..ref.hInstance = hInstance
-    ..ref.hIcon = LoadIcon(NULL, IDI_APPLICATION)
-    ..ref.hCursor = LoadCursor(NULL, IDC_ARROW)
-    ..ref.hbrBackground = CreateSolidBrush(RGB(42, 40, 38))
-    ..ref.lpszClassName = szAppName;
-    
+      ..ref.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC
+      ..ref.lpfnWndProc = Pointer.fromFunction<WindowProc>(editWindowProc, 0)
+      ..ref.hInstance = hInstance
+      ..ref.hIcon = LoadIcon(NULL, IDI_APPLICATION)
+      ..ref.hCursor = LoadCursor(NULL, IDC_ARROW)
+      ..ref.hbrBackground = CreateSolidBrush(RGB(42, 40, 38))
+      ..ref.lpszClassName = szAppName;
+
     RegisterClass(wc);
 
     hwndEdit = CreateWindowEx(
@@ -290,7 +290,6 @@ class TextOutput {
     SetTextColor(hdcEdit, RGB(255, 255, 255));
     SetBkColor(hdcEdit, RGB(42, 40, 38));
 
-
     ReleaseDC(hwndEdit, hdcEdit);
   }
 
@@ -303,7 +302,6 @@ class TextOutput {
         TEXT("Hello\r\nWorld!!!\r\n-------------------\r\n Bla bla bla\r\n"));
   }
 }
-
 
 int editWindowProc(int hwnd, int uMsg, int wParam, int lParam) {
   int hdc;
@@ -343,5 +341,3 @@ int editWindowProc(int hwnd, int uMsg, int wParam, int lParam) {
 
   return result;
 }
-
-
