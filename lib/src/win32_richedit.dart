@@ -77,7 +77,7 @@ class RichEdit extends Window {
 
     SetWindowText(hwnd, TEXT("Hello\r\nWorld!!!\r\n"));
 
-    appendText(hwnd, RGB(255,0,0), "Colored Text?".toNativeUtf16());
+    appendText(hwnd, RGB(255, 0, 0), "Colored Text?".toNativeUtf16());
   }
 
   int setBkColor(int hwnd, int color) =>
@@ -97,6 +97,15 @@ class RichEdit extends Window {
     var r = SendMessage(hwnd, EM_GETCHARFORMAT, range, cf.address);
     print('!!! getCharFormat> $r');
     print(cf.toString());
+    print(cf.ref.cbSize);
+    print(cf.ref.dwMask);
+    print(cf.ref.dwEffects);
+    print(cf.ref.yHeight);
+    print(cf.ref.yOffset);
+    print(cf.ref.crTextColor);
+    print(cf.ref.bCharSet);
+    print(cf.ref.bPitchAndFamily);
+    print(cf.ref.szFaceName);
 
     return cf;
   }
