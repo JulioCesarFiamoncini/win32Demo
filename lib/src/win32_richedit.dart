@@ -155,6 +155,8 @@ typedef struct _charformat
 } CHARFORMAT;
  */
 
+const LF_FACESIZE = 32;
+
 base class CHARFORMAT extends Struct {
   @Uint32()
   external int cbSize;
@@ -180,7 +182,26 @@ base class CHARFORMAT extends Struct {
   @Uint8()
   external int bPitchAndFamily;
 
-  external Pointer<Utf16> szFaceName;
+  //external Pointer<Utf16> szFaceName;
+
+  @Array(LF_FACESIZE)
+  external Array<Uint16> _szFaceName;
+
+  String get szFaceName {
+    final charCodes = <int>[];
+    for (var i = 0; i < LF_FACESIZE; i++) {
+      if (_szFaceName[i] == 0x00) break;
+      charCodes.add(_szFaceName[i]);
+    }
+    return String.fromCharCodes(charCodes);
+  }
+
+  set szFaceName(String value) {
+    final stringToStore = value.padRight(LF_FACESIZE, '\x00');
+    for (var i = 0; i < LF_FACESIZE; i++) {
+      _szFaceName[i] = stringToStore.codeUnitAt(i);
+    }
+  }
 }
 
 /*
