@@ -72,21 +72,13 @@ class RichEdit extends Window {
   void repaint(int hwnd, int hdc) {
     SetTextColor(hdc, RGB(255, 0, 0)); // red
 
-    setBkColor(hwnd, RGB(42, 40, 38));
+    setBkColor(hwnd, RGB(62, 60, 58));
     setAutoURLDetect(hwnd, true);
-
-    /*
-    SetWindowText(
-        hwnd,
-        TEXT(
-            "Hello\r\nWorld!!!\r\n-------------------\r\n Bla bla bla: http://www.google.com/\r\n"));
-     */
-
-    //SetWindowText(hwnd, TEXT("Hello\r\nWorld!!!\r\n"));
 
     appendText(hwnd, RGB(255, 0, 0), "Hello\r\n".toNativeUtf16());
     appendText(hwnd, RGB(0, 255, 0), "Word\r\n".toNativeUtf16());
     appendText(hwnd, RGB(0, 0, 255), "Colored Text?".toNativeUtf16());
+    appendText(hwnd, RGB(255, 0, 255), " YES\r\n".toNativeUtf16());
   }
 
   int setBkColor(int hwnd, int color) =>
