@@ -112,6 +112,7 @@ class RichEdit extends Window {
     var cf = getCharFormat(hwnd); // get default char format
     cf.ref.cbSize = sizeOf<CHARFORMAT>();
     cf.ref.dwMask = CFM_COLOR; // change color
+    cf.ref.dwEffects = 0;
     cf.ref.crTextColor = clr;
 
     setCharFormat(hwnd, cf); // set default char format
