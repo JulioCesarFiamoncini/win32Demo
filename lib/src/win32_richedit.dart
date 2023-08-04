@@ -94,7 +94,8 @@ class RichEdit extends Window {
 
   Pointer<CHARFORMAT> getCharFormat(int hwnd, [int range = SCF_DEFAULT]) {
     final cf = calloc<CHARFORMAT>();
-    SendMessage(hwnd, EM_GETCHARFORMAT, range, cf.address);
+    var r = SendMessage(hwnd, EM_GETCHARFORMAT, range, cf.address);
+    print('!!! getCharFormat> $r');
     return cf;
   }
 
@@ -116,11 +117,13 @@ class RichEdit extends Window {
     cf.ref.crTextColor = clr;
 
     var r1 = setCharFormat(hwnd, cf); // set default char format
-
     print('!!! setCharFormat> $r1');
 
-    replaceSel(hwnd, str); // code from google
-    scrollToBottom(hwnd); // scroll to bottom
+    var r2 = replaceSel(hwnd, str); // code from google
+    print('!!! replaceSel> $r2');
+
+    var r3 = scrollToBottom(hwnd); // scroll to bottom
+    print('!!! scrollToBottom> $r3');
   }
 }
 
