@@ -72,12 +72,12 @@ class RichEdit extends Window {
   void repaint(int hwnd, int hdc) {
     SetTextColor(hdc, RGB(255, 0, 0)); // red
 
-    setBkColor(hwnd, RGB(32, 32, 32));
+    setBkColor(hwnd, RGB(16, 16, 16));
     setAutoURLDetect(hwnd, true);
 
     appendText(hwnd, RGB(255, 0, 0), "Hello\r\n".toNativeUtf16());
     appendText(hwnd, RGB(0, 255, 0), "Word\r\n".toNativeUtf16());
-    appendText(hwnd, RGB(0, 0, 255), "Colored Text?".toNativeUtf16());
+    appendText(hwnd, RGB(0, 255, 255), "Colored Text?".toNativeUtf16());
     appendText(hwnd, RGB(255, 0, 255), " YES\r\n".toNativeUtf16());
   }
 
