@@ -48,6 +48,7 @@ class RichEdit extends Window {
     SetTextColor(hdc, RGB(255, 255, 255));
     SetBkColor(hdc, RGB(42, 40, 38));
 
+    setBkColor(hwnd, RGB(42, 40, 38));
     setAutoURLDetect(hwnd, true);
   }
 
@@ -55,7 +56,8 @@ class RichEdit extends Window {
   void repaint(int hwnd, int hdc) {
     SetTextColor(hdc, RGB(255, 0, 0)); // red
 
-    SendMessage(hwnd, EM_SETBKGNDCOLOR, 0, RGB(42, 40, 38));
+    setBkColor(hwnd, RGB(42, 40, 38));
+    setAutoURLDetect(hwnd, true);
 
     SetWindowText(hwnd,
         TEXT("Hello\r\nWorld!!!\r\n-------------------\r\n Bla bla bla: http://www.google.com/\r\n"));
