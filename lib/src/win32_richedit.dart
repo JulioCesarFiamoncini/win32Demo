@@ -155,7 +155,7 @@ typedef struct _charformat
 } CHARFORMAT;
  */
 
-const LF_FACESIZE = 32;
+//const LF_FACESIZE = 32;
 
 base class CHARFORMAT extends Struct {
   @Uint32()
