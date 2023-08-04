@@ -121,13 +121,14 @@ class RichEdit extends Window {
 
   // this function is used to output text in different color
   void appendText(int hwnd, int clr, Pointer<Utf16> str) {
-    setCursorToBottom(hwnd); // move cursor to bottom
+    var r0 = setCursorToBottom(hwnd); // move cursor to bottom
+    print('!!! setCursorToBottom> $r0');
 
     var cf = getCharFormat(hwnd); // get default char format
     cf.ref.cbSize = sizeOf<CHARFORMAT>();
     cf.ref.dwMask = CFM_COLOR; // change color
-    cf.ref.dwEffects = 0;
     cf.ref.crTextColor = clr;
+    cf.ref.dwEffects = 0;
 
     var r1 = setCharFormat(hwnd, cf); // set default char format
     print('!!! setCharFormat> $r1');
