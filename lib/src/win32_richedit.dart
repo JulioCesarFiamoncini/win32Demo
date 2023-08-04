@@ -1,3 +1,6 @@
+import 'dart:ffi';
+
+import 'package:ffi/ffi.dart';
 import 'package:win32/win32.dart';
 
 import 'ui_win32_demo_base.dart';
@@ -18,6 +21,12 @@ class RichEdit extends Window {
   static final int WM_USER = 1024;
   static final int EM_SETBKGNDCOLOR = WM_USER + 67;
   static final int EM_AUTOURLDETECT = WM_USER + 91;
+  static final int EM_GETCHARFORMAT = WM_USER + 58;
+  static final int EM_SETCHARFORMAT = WM_USER + 68;
+  static final int CFM_COLOR = 0x40000000;
+
+  static const int SCF_DEFAULT = 0x0000;
+  static final int SCF_ALL = 0x0004;
 
   RichEdit({super.parentHwnd})
       : super(
@@ -59,8 +68,16 @@ class RichEdit extends Window {
     setBkColor(hwnd, RGB(42, 40, 38));
     setAutoURLDetect(hwnd, true);
 
-    SetWindowText(hwnd,
-        TEXT("Hello\r\nWorld!!!\r\n-------------------\r\n Bla bla bla: http://www.google.com/\r\n"));
+    /*
+    SetWindowText(
+        hwnd,
+        TEXT(
+            "Hello\r\nWorld!!!\r\n-------------------\r\n Bla bla bla: http://www.google.com/\r\n"));
+     */
+
+    SetWindowText(hwnd, TEXT("Hello\r\nWorld!!!\r\n"));
+
+    appendText(hwnd, RGB(255,0,0), "Colored Text?".toNativeUtf16());
   }
 
   void setBkColor(int hwnd, int color) =>
@@ -68,4 +85,114 @@ class RichEdit extends Window {
 
   void setAutoURLDetect(int hwnd, bool autoDetect) =>
       SendMessage(hwnd, EM_AUTOURLDETECT, autoDetect ? 1 : 0, 0);
+
+  void setCursorToBottom(int hwnd) => SendMessage(hwnd, EM_SETSEL, -2, -1);
+
+  void scrollTo(int hwnd, int pos) => SendMessage(hwnd, WM_VSCROLL, pos, 0);
+
+  void scrollToBottom(int hwnd) => scrollTo(hwnd, SB_BOTTOM);
+
+  Pointer<CHARFORMAT> getCharFormat(int hwnd, [int range = SCF_DEFAULT]) {
+    final cf = calloc<CHARFORMAT>();
+    SendMessage(hwnd, EM_GETCHARFORMAT, range, cf.address);
+    return cf;
+  }
+
+  void setCharFormat(int hwnd, Pointer<CHARFORMAT> cf,
+          [int range = SCF_DEFAULT]) =>
+      SendMessage(hwnd, EM_SETCHARFORMAT, range, cf.address);
+
+  void replaceSel(int hwnd, Pointer<Utf16> str) =>
+      SendMessage(hwnd, EM_REPLACESEL, 0, str.address);
+
+  // this function is used to output text in different color
+  void appendText(int hwnd, int clr, Pointer<Utf16> str) {
+    setCursorToBottom(hwnd); // move cursor to bottom
+
+    var cf = getCharFormat(hwnd); // get default char format
+    cf.ref.cbSize = sizeOf<CHARFORMAT>();
+    cf.ref.dwMask = CFM_COLOR; // change color
+    cf.ref.crTextColor = clr;
+
+    setCharFormat(hwnd, cf); // set default char format
+
+    replaceSel(hwnd, str); // code from google
+    scrollToBottom(hwnd); // scroll to bottom
+  }
 }
+
+/*
+typedef struct _charformat
+{
+	UINT		cbSize;
+	_WPAD		_wPad1;
+	DWORD		dwMask;
+	DWORD		dwEffects;
+	LONG		yHeight;
+	LONG		yOffset;			/* > 0 for superscript, < 0 for subscript */
+	COLORREF	crTextColor;
+	BYTE		bCharSet;
+	BYTE		bPitchAndFamily;
+	TCHAR		szFaceName[LF_FACESIZE];
+	_WPAD		_wPad2;
+} CHARFORMAT;
+ */
+
+base class CHARFORMAT extends Struct {
+  @Uint32()
+  external int cbSize;
+
+  @Uint32()
+  external int dwMask;
+
+  @Uint32()
+  external int dwEffects;
+
+  @Int32()
+  external int yHeight;
+
+  @Int32()
+  external int yOffset;
+
+  @Uint32()
+  external int crTextColor;
+
+  @Uint8()
+  external int bCharSet;
+
+  @Uint8()
+  external int bPitchAndFamily;
+
+  external Pointer<Utf16> szFaceName;
+}
+
+/*
+base class WNDCLASS extends Struct {
+  @Uint32()
+  external int style;
+
+  external Pointer<NativeFunction<WindowProc>> lpfnWndProc;
+
+  @Int32()
+  external int cbClsExtra;
+
+  @Int32()
+  external int cbWndExtra;
+
+  @IntPtr()
+  external int hInstance;
+
+  @IntPtr()
+  external int hIcon;
+
+  @IntPtr()
+  external int hCursor;
+
+  @IntPtr()
+  external int hbrBackground;
+
+  external Pointer<Utf16> lpszMenuName;
+
+  external Pointer<Utf16> lpszClassName;
+}
+ */
