@@ -101,7 +101,8 @@ class RichEdit extends Window {
 
   Pointer<CHARFORMAT> getCharFormat(int hwnd, [int range = SCF_SELECTION]) {
     final cf = calloc<CHARFORMAT>();
-    var r = SendMessage(hwnd, EM_GETCHARFORMAT, 1, cf.address);
+
+    var r = SendMessage(hwnd, EM_GETCHARFORMAT, range, cf.address);
     print('!!! getCharFormat> $r');
     print(cf.toString());
     print(cf.ref.cbSize);
@@ -119,7 +120,7 @@ class RichEdit extends Window {
 
   int setCharFormat(int hwnd, Pointer<CHARFORMAT> cf,
           [int range = SCF_SELECTION]) =>
-      SendMessage(hwnd, EM_SETCHARFORMAT, 1, cf.address);
+      SendMessage(hwnd, EM_SETCHARFORMAT, range, cf.address);
 
   int replaceSel(int hwnd, Pointer<Utf16> str) =>
       SendMessage(hwnd, EM_REPLACESEL, 0, str.address);
