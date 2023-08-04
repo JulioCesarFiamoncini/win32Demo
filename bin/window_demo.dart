@@ -118,7 +118,7 @@ class TextOutput extends Window {
     SetBkColor(hdc, RGB(42, 40, 38));
 
     var WM_USER = 1024;
-    var EM_SETBKGNDCOLOR = WM_USER = 67;
+    var EM_SETBKGNDCOLOR = WM_USER + 67;
 
     SendMessage(hwnd, EM_SETBKGNDCOLOR, 1, RGB(42, 40, 38));
   }
