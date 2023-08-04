@@ -4,7 +4,7 @@ import 'dart:math' as math;
 
 import 'package:ffi/ffi.dart';
 import 'package:win32/win32.dart';
-import 'win32_constants.dart';
+//import 'win32_constants.dart';
 
 final hInstance = GetModuleHandle(nullptr);
 
@@ -83,10 +83,12 @@ class WindowClass {
       int hwnd, int uMsg, int wParam, int lParam, WindowClass windowClass) {
     var result = 0;
 
+    // var name = Win32Constants.wmByID[uMsg];
+    // print('winProc[default]> uMsg: $uMsg ; name: $name');
+
     switch (uMsg) {
       case WM_CREATE:
         {
-          print('winProc[WM_CREATE]');
           final hdc = GetDC(hwnd);
 
           if (windowClass.useDarkMode) {
@@ -115,8 +117,6 @@ class WindowClass {
         }
       case WM_PAINT:
         {
-          print('winProc[WM_PAINT]');
-
           final ps = calloc<PAINTSTRUCT>();
           final hdc = BeginPaint(hwnd, ps);
 
@@ -129,29 +129,23 @@ class WindowClass {
         }
       case WM_CTLCOLORSTATIC:
         {
-          print('winProc[WM_CTLCOLORSTATIC]');
           result = _setColors(wParam, staticColors);
         }
       case WM_CTLCOLOREDIT:
         {
-          print('winProc[WM_CTLCOLOREDIT]');
           result = _setColors(wParam, editColors);
         }
       case WM_CTLCOLORSCROLLBAR:
         {
-          print('winProc[WM_CTLCOLORSCROLLBAR]');
           result = _setColors(wParam, scrollBarColors);
         }
       case WM_DESTROY:
         {
-          print('winProc[WM_DESTROY]');
           PostQuitMessage(0);
         }
 
       default:
         {
-          var name = Win32Constants.wmByID[uMsg];
-          print('winProc[default]> uMsg: $uMsg ; name: $name');
           result = DefWindowProc(hwnd, uMsg, wParam, lParam);
         }
     }
