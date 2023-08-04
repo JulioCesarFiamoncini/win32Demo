@@ -25,6 +25,20 @@ class WindowClassColors {
 }
 
 class WindowClass {
+  static bool? _loadedRichEditLibrary;
+
+  static bool loadRichEditLibrary() =>
+      _loadedRichEditLibrary ??= _loadRichEditLibraryImpl();
+
+  static bool _loadRichEditLibraryImpl() {
+    try {
+      DynamicLibrary.open('RICHED32.DLL');
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
   final String className;
   final Pointer<NativeFunction<WindowProc>> windowProc;
 

@@ -76,14 +76,23 @@ class MainWindow extends Window {
 }
 
 class TextOutput extends Window {
+  static final bool richEditLoaded = WindowClass.loadRichEditLibrary();
+
   static final textOutputWindowClass = WindowClass.predefined(
     className: 'edit',
     bgColor: RGB(128, 128, 128),
   );
 
+  static final textOutputWindowClassRich = WindowClass.predefined(
+    className: 'RichEdit',
+    bgColor: RGB(128, 128, 128),
+  );
+
   TextOutput({super.parentHwnd})
       : super(
-          windowClass: textOutputWindowClass,
+          windowClass: richEditLoaded
+              ? textOutputWindowClassRich
+              : textOutputWindowClass,
           windowStyles: WS_CHILD |
               ES_READONLY |
               WS_VISIBLE |
@@ -107,6 +116,11 @@ class TextOutput extends Window {
 
     SetTextColor(hdc, RGB(255, 255, 255));
     SetBkColor(hdc, RGB(42, 40, 38));
+
+    var WM_USER = 1024;
+    var EM_SETBKGNDCOLOR = WM_USER = 67;
+
+    SendMessage(hwnd, EM_SETBKGNDCOLOR, 1, RGB(42, 40, 38));
   }
 
   @override
