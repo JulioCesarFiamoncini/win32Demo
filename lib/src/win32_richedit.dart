@@ -6,16 +6,18 @@ import 'package:win32/win32.dart';
 import 'ui_win32_demo_base.dart';
 
 class RichEdit extends Window {
-  static final bool richEditLoaded = WindowClass.loadRichEditLibrary();
+  static final int richEditLoadedVersion = WindowClass.loadRichEditLibrary();
 
   static final textOutputWindowClass = WindowClass.predefined(
     className: 'edit',
-    bgColor: RGB(128, 128, 128),
   );
 
-  static final textOutputWindowClassRich = WindowClass.predefined(
+  static final textOutputWindowClassRich2 = WindowClass.predefined(
+    className: 'RichEdit20W',
+  );
+
+  static final textOutputWindowClassRich1 = WindowClass.predefined(
     className: 'RichEdit',
-    bgColor: RGB(128, 128, 128),
   );
 
   static final int WM_USER = 1024;
@@ -30,9 +32,11 @@ class RichEdit extends Window {
 
   RichEdit({super.parentHwnd})
       : super(
-          windowClass: richEditLoaded
-              ? textOutputWindowClassRich
-              : textOutputWindowClass,
+          windowClass: switch (richEditLoadedVersion) {
+            2 => textOutputWindowClassRich2,
+            1 => textOutputWindowClassRich1,
+            _ => textOutputWindowClass,
+          },
           windowStyles: WS_CHILD |
               ES_READONLY |
               WS_VISIBLE |

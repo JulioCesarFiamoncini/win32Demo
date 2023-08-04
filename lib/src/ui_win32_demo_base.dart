@@ -25,18 +25,23 @@ class WindowClassColors {
 }
 
 class WindowClass {
-  static bool? _loadedRichEditLibrary;
+  static int? _loadedRichEditLibrary;
 
-  static bool loadRichEditLibrary() =>
+  static int loadRichEditLibrary() =>
       _loadedRichEditLibrary ??= _loadRichEditLibraryImpl();
 
-  static bool _loadRichEditLibraryImpl() {
+  static int _loadRichEditLibraryImpl() {
+    try {
+      DynamicLibrary.open('RICHED20.DLL');
+      return 2;
+    } catch (_) {}
+
     try {
       DynamicLibrary.open('RICHED32.DLL');
-      return true;
-    } catch (_) {
-      return false;
-    }
+      return 1;
+    } catch (_) {}
+
+    return 0;
   }
 
   final String className;
