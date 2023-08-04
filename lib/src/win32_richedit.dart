@@ -80,17 +80,17 @@ class RichEdit extends Window {
     appendText(hwnd, RGB(255,0,0), "Colored Text?".toNativeUtf16());
   }
 
-  void setBkColor(int hwnd, int color) =>
+  int setBkColor(int hwnd, int color) =>
       SendMessage(hwnd, EM_SETBKGNDCOLOR, 0, color);
 
-  void setAutoURLDetect(int hwnd, bool autoDetect) =>
+  int setAutoURLDetect(int hwnd, bool autoDetect) =>
       SendMessage(hwnd, EM_AUTOURLDETECT, autoDetect ? 1 : 0, 0);
 
-  void setCursorToBottom(int hwnd) => SendMessage(hwnd, EM_SETSEL, -2, -1);
+  int setCursorToBottom(int hwnd) => SendMessage(hwnd, EM_SETSEL, -2, -1);
 
-  void scrollTo(int hwnd, int pos) => SendMessage(hwnd, WM_VSCROLL, pos, 0);
+  int scrollTo(int hwnd, int pos) => SendMessage(hwnd, WM_VSCROLL, pos, 0);
 
-  void scrollToBottom(int hwnd) => scrollTo(hwnd, SB_BOTTOM);
+  int scrollToBottom(int hwnd) => scrollTo(hwnd, SB_BOTTOM);
 
   Pointer<CHARFORMAT> getCharFormat(int hwnd, [int range = SCF_DEFAULT]) {
     final cf = calloc<CHARFORMAT>();
@@ -98,11 +98,11 @@ class RichEdit extends Window {
     return cf;
   }
 
-  void setCharFormat(int hwnd, Pointer<CHARFORMAT> cf,
+  int setCharFormat(int hwnd, Pointer<CHARFORMAT> cf,
           [int range = SCF_DEFAULT]) =>
       SendMessage(hwnd, EM_SETCHARFORMAT, range, cf.address);
 
-  void replaceSel(int hwnd, Pointer<Utf16> str) =>
+  int replaceSel(int hwnd, Pointer<Utf16> str) =>
       SendMessage(hwnd, EM_REPLACESEL, 0, str.address);
 
   // this function is used to output text in different color
@@ -115,7 +115,9 @@ class RichEdit extends Window {
     cf.ref.dwEffects = 0;
     cf.ref.crTextColor = clr;
 
-    setCharFormat(hwnd, cf); // set default char format
+    var r1 = setCharFormat(hwnd, cf); // set default char format
+
+    print('!!! setCharFormat> $r1');
 
     replaceSel(hwnd, str); // code from google
     scrollToBottom(hwnd); // scroll to bottom
