@@ -54,8 +54,8 @@ class RichEdit extends Window {
           width: 626,
           height: 90,
         ) {
-          print('!!! richEditLoadedVersion: $richEditLoadedVersion');
-}
+    print('!!! richEditLoadedVersion: $richEditLoadedVersion');
+  }
 
   @override
   void build(int hwnd, int hdc) {
