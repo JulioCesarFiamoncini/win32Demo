@@ -76,7 +76,7 @@ class MainWindow extends Window {
 }
 
 class TextOutput extends Window {
-  static final bool richEditLoaded = WindowClass.loadRichEditLibrary();
+  static final bool richEditLoaded = WindowClass.loadRichEditLibrary() > 0;
 
   static final textOutputWindowClass = WindowClass.predefined(
     className: 'edit',

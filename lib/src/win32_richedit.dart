@@ -28,7 +28,8 @@ class RichEdit extends Window {
   static final int CFM_COLOR = 0x40000000;
 
   static const int SCF_DEFAULT = 0x0000;
-  static final int SCF_ALL = 0x0004;
+  static const int SCF_ALL = 0x0004;
+  static const int SCF_SELECTION = 0x1;
 
   RichEdit({super.parentHwnd})
       : super(
@@ -98,7 +99,7 @@ class RichEdit extends Window {
 
   int scrollToBottom(int hwnd) => scrollTo(hwnd, SB_BOTTOM);
 
-  Pointer<CHARFORMAT> getCharFormat(int hwnd, [int range = SCF_DEFAULT]) {
+  Pointer<CHARFORMAT> getCharFormat(int hwnd, [int range = SCF_SELECTION]) {
     final cf = calloc<CHARFORMAT>();
     var r = SendMessage(hwnd, EM_GETCHARFORMAT, range, cf.address);
     print('!!! getCharFormat> $r');
@@ -117,7 +118,7 @@ class RichEdit extends Window {
   }
 
   int setCharFormat(int hwnd, Pointer<CHARFORMAT> cf,
-          [int range = SCF_DEFAULT]) =>
+          [int range = SCF_SELECTION]) =>
       SendMessage(hwnd, EM_SETCHARFORMAT, range, cf.address);
 
   int replaceSel(int hwnd, Pointer<Utf16> str) =>
