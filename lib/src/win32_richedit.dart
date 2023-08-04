@@ -96,6 +96,8 @@ class RichEdit extends Window {
     final cf = calloc<CHARFORMAT>();
     var r = SendMessage(hwnd, EM_GETCHARFORMAT, range, cf.address);
     print('!!! getCharFormat> $r');
+    print(cf.toString());
+
     return cf;
   }
 
